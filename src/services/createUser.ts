@@ -13,7 +13,7 @@ async function createUser(userData: UserData): Promise<any> {
   const userExists = await User.findOne({ email });
 
   if (userExists) {
-    throw Error('User already exists');
+    throw new Error('User already exists');
   }
 
   const passwordHash = await bcrypt.hash(password, 8);

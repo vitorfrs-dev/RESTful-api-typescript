@@ -11,7 +11,9 @@ class UserController {
 
       return res.json(user);
     } catch (err) {
-      return res.status(400).json(err.message);
+      return res.status(400).json({
+        error: err.message,
+      });
     }
   }
 
