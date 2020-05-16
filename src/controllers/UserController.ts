@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import createUser from '../services/createUser';
 import User from '../models/User';
+import updateUser from '../services/updateUser';
 
 class UserController {
   static async create(req: Request, res: Response) {
@@ -35,6 +36,24 @@ class UserController {
       return res.json(user);
     } catch (err) {
       return res.status(500).json(err.message);
+    }
+  }
+
+  static async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const { name, email, password } = req.body;
+
+    try {
+      const user = await updateUser({
+        id,
+        name,
+        email,
+        password,
+      });
+
+      return res.json(user);
+    } catch (err) {
+      return res.status(400).json({ error: err.message });
     }
   }
 }
