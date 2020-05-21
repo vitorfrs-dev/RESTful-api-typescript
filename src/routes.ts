@@ -11,5 +11,6 @@ routes.put('/user/:id', UserController.update);
 
 routes.post('/forgotPassword', ForgotController.create);
 routes.get('/forgotPassword/:resetToken', ForgotController.show);
+routes.put('/forgotPassword', ForgotController.update);
 
 export default routes;
