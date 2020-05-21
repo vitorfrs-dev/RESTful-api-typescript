@@ -2,12 +2,26 @@ import { Request, Response } from 'express';
 import forgotPassword from '../services/forgotPassword';
 
 import ForgotPassword from '../models/ForgotPassword';
+import Mailer from '../utils/Mailer';
 
 class ForgotPasswordRequest {
   static async create(req: Request, res: Response) {
     const { email } = req.body;
 
-    await forgotPassword(email);
+    const forgot = await forgotPassword(email);
+
+    if (!forgot) return res.sendStatus(500);
+
+    const { forgot: forgotObject, user } = forgot;
+
+    const mailer = new Mailer();
+
+    await mailer.sendMail({
+      to: `${user.name} <${user.email}>`,
+      subject: 'Reset de senha',
+      text: `Reset de senha, ${forgotObject.resetToken}`,
+      template: 'resetPassword',
+    });
 
     return res.sendStatus(200);
   }
