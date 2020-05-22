@@ -33,6 +33,10 @@ class UserController {
       const { id } = req.params;
       const user = await User.findById(id);
 
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
       return res.json(user);
     } catch (err) {
       return res.status(500).json(err.message);
@@ -43,12 +47,20 @@ class UserController {
     const { id } = req.params;
     const { name, email, password } = req.body;
 
+    let avatar;
+
+    if (req.file) {
+      const { filename } = req.file;
+      avatar = filename;
+    }
+
     try {
       const user = await updateUser({
         id,
         name,
         email,
         password,
+        avatar,
       });
 
       return res.json(user);

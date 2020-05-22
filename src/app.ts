@@ -18,6 +18,7 @@ class App {
   middlewares(): void {
     this.app.use(express.json());
     this.app.use(morgan('dev'));
+    this.app.use('/files', express.static('uploads'));
   }
 
   routes(): void {

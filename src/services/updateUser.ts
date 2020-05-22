@@ -6,10 +6,11 @@ interface UserData {
   name?: string;
   email?: string;
   password?: string;
+  avatar?: string;
 }
 
 async function updateUser(userData: UserData): Promise<any> {
-  const { id, name, email, password } = userData;
+  const { id, name, email, password, avatar } = userData;
 
   const user = await User.findById(id);
 
@@ -32,6 +33,10 @@ async function updateUser(userData: UserData): Promise<any> {
     }
 
     user.email = email;
+  }
+
+  if (avatar) {
+    user.avatar = avatar;
   }
 
   await user.save();
