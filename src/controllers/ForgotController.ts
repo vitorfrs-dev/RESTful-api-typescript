@@ -36,7 +36,8 @@ class ForgotPasswordRequest {
     });
 
     if (!forgot) {
-      return res.send(401).json({ msg: 'requestToken not found' });
+      console.log('TESTANDO========================');
+      return res.status(401).json({ msg: 'requestToken not found' });
     }
 
     return res.json(forgot);
