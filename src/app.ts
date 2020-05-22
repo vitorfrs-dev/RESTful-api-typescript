@@ -1,4 +1,5 @@
 import express from 'express';
+import morgan from 'morgan';
 import routes from './routes';
 import DB from './db/DB';
 
@@ -16,6 +17,7 @@ class App {
 
   middlewares(): void {
     this.app.use(express.json());
+    this.app.use(morgan('dev'));
   }
 
   routes(): void {
