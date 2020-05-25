@@ -1,9 +1,10 @@
 import crypto from 'crypto';
+import Mailer from '../utils/Mailer';
 
 import User from '../models/User';
-import ForgotPassword, { FPasswordInterface } from '../models/ForgotPassword';
+import ForgotPassword from '../models/ForgotPassword';
 
-async function forgotPassword(email: string): Promise<Forgot> {
+async function forgotPassword(email: string): Promise<void> {
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -12,21 +13,30 @@ async function forgotPassword(email: string): Promise<Forgot> {
 
   const resetToken = crypto.randomBytes(16).toString('hex');
 
-  const forgot = await ForgotPassword.create({
+  await ForgotPassword.create({
     userId: user._id,
     resetToken,
     expiresIn: Date.now() + 3600 * 1000 * 1,
   });
 
-  return { forgot, user: { name: user.name, email: user.email } };
-}
+  const mailer = new Mailer();
 
-interface Forgot {
-  forgot: FPasswordInterface;
-  user: {
-    name: string;
-    email: string;
-  };
+  const link = `https://localhost:3000/forgotPassword/${resetToken}`;
+
+  try {
+    await mailer.sendMail({
+      to: `${user.name} <${user.email}>`,
+      subject: 'Reset de senha',
+      text: `Reset de senha, ${resetToken}`,
+      template: 'resetPassword',
+      context: {
+        name: user.name,
+        link,
+      },
+    });
+  } catch (err) {
+    throw new Error('Unable to send the password reset email');
+  }
 }
 
 export default forgotPassword;

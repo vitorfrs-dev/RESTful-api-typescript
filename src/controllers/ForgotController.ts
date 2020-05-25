@@ -3,39 +3,18 @@ import forgotPassword from '../services/forgotPassword';
 import redefinePassResetToken from '../services/redefinePassResetToken';
 
 import ForgotPassword from '../models/ForgotPassword';
-import Mailer from '../utils/Mailer';
 
 class ForgotPasswordRequest {
   static async create(req: Request, res: Response) {
     const { email } = req.body;
     try {
-      const forgot = await forgotPassword(email);
-
-      if (!forgot) return res.sendStatus(500);
-
-      const { forgot: forgotObject, user } = forgot;
-
-      const mailer = new Mailer();
-
-      const link = `https://localhost:3000/forgotPassword/${forgotObject.resetToken}`;
-
-      await mailer.sendMail({
-        to: `${user.name} <${user.email}>`,
-        subject: 'Reset de senha',
-        text: `Reset de senha, ${forgotObject.resetToken}`,
-        template: 'resetPassword',
-        context: {
-          name: user.name,
-          link,
-        },
-      });
-
+      await forgotPassword(email);
       return res.sendStatus(200);
     } catch (err) {
       if (err.message === 'User not found') {
         return res.status(400).json({ error: err.message });
       }
-      return res.sendStatus(500);
+      return res.status(500).json({ error: err.message });
     }
   }
 
