@@ -48,6 +48,7 @@ interface MailOptionsInterface {
   text?: string;
   html?: string;
   template?: string;
+  context?: any;
 }
 
 export default Mailer;
