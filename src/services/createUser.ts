@@ -7,7 +7,7 @@ interface UserData {
   password: string;
 }
 
-async function createUser(userData: UserData): Promise<any> {
+async function createUser(userData: UserData): Promise<UserData> {
   const { name, email, password } = userData;
 
   const userExists = await User.findOne({ email });

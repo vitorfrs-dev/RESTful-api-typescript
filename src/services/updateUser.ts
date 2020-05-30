@@ -2,14 +2,14 @@ import bcrypt from 'bcryptjs';
 import User from '../models/User';
 
 interface UserData {
-  id: string;
+  id?: string;
   name?: string;
   email?: string;
   password?: string;
   avatar?: string;
 }
 
-async function updateUser(userData: UserData): Promise<any> {
+async function updateUser(userData: UserData): Promise<UserData> {
   const { id, name, email, password, avatar } = userData;
 
   const user = await User.findById(id);
