@@ -4,7 +4,7 @@ import User from '../models/User';
 import updateUser from '../services/updateUser';
 
 class UserController {
-  static async create(req: Request, res: Response) {
+  static async create(req: Request, res: Response): Promise<Response> {
     const { name, email, password } = req.body;
 
     try {
@@ -18,7 +18,7 @@ class UserController {
     }
   }
 
-  static async index(req: Request, res: Response) {
+  static async index(req: Request, res: Response): Promise<Response> {
     try {
       const users = await User.find();
 
@@ -28,7 +28,7 @@ class UserController {
     }
   }
 
-  static async show(req: Request, res: Response) {
+  static async show(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params;
       const user = await User.findById(id);
@@ -43,7 +43,7 @@ class UserController {
     }
   }
 
-  static async update(req: Request, res: Response) {
+  static async update(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     const { name, email, password } = req.body;
 

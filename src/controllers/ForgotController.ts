@@ -5,7 +5,7 @@ import redefinePassResetToken from '../services/redefinePassResetToken';
 import ForgotPassword from '../models/ForgotPassword';
 
 class ForgotPasswordRequest {
-  static async create(req: Request, res: Response) {
+  static async create(req: Request, res: Response): Promise<Response> {
     const { email } = req.body;
     try {
       await forgotPassword(email);
@@ -18,7 +18,7 @@ class ForgotPasswordRequest {
     }
   }
 
-  static async show(req: Request, res: Response) {
+  static async show(req: Request, res: Response): Promise<Response> {
     const { resetToken } = req.params;
 
     const forgot = await ForgotPassword.findOne({
@@ -33,7 +33,7 @@ class ForgotPasswordRequest {
     return res.json(forgot);
   }
 
-  static async update(req: Request, res: Response) {
+  static async update(req: Request, res: Response): Promise<Response> {
     const { resetToken, newPass, confirmNewPass } = req.body;
 
     try {

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import authenticateUser from '../services/authenticateUser';
 
 class SessionController {
-  static async create(req: Request, res: Response) {
+  static async create(req: Request, res: Response): Promise<Response> {
     const { email, password } = req.body;
     try {
       const { user, token } = await authenticateUser(email, password);
