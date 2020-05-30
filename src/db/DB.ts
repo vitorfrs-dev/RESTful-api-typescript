@@ -5,7 +5,7 @@ class DB {
 
   constructor() {
     this.conn = mongoose
-      .connect('mongodb://localhost:27017/restApi', {
+      .connect(process.env.MONGO_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       })
